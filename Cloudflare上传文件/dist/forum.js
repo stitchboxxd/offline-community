@@ -19,6 +19,7 @@ const navCharacters={
 // Five licensed Human Pictogram 2.0 assets, hosted locally (no third-party image hotlink).
 const licensedFigure=kind=>`<span class="licensed-pictogram figure-${kind}" style="--figure:url('/pictogram-${kind}.png')" aria-hidden="true"></span>`;
 Object.keys(navCharacters).forEach(kind=>navCharacters[kind]=licensedFigure(kind));
+navCharacters.community=`<svg viewBox="0 0 140 110" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><circle cx="43" cy="23" r="8"/><circle cx="88" cy="28" r="8"/></g><g fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"><path d="M43 41v30m0-24-15 18m15-16 13 10M43 70 30 98m13-28 14 28"/><g class="whispering-player"><path d="m94 46 13 25m-13-22L78 39l-17-4m35 18 17 6m-6 12-13 25m13-25 17 21"/></g></g><path d="M75 26q-7-3-12 0m11 5q-6-1-10 1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
 for(const s of ['#brand-man','#rail-man','#art-figure','#portal-man-a','#portal-man-b'])$(s).innerHTML=manSVG;document.querySelectorAll('.nav-item').forEach(b=>{const kind=b.dataset.route;const art=navCharacters[kind]||manSVG;b.insertAdjacentHTML('afterbegin',`<span class="nav-character nav-${kind}">${art}</span><span class="nav-label">${b.textContent.trim()}</span>`);[...b.childNodes].filter(n=>n.nodeType===Node.TEXT_NODE).forEach(n=>n.remove())});document.querySelector('footer>div').prepend($('#motion-toggle'));
 const games=['SNAPTIC','以撒的结合','Minecraft','绝地潜兵 2','赛博朋克 2077'];const roles={guest:'游客',player:'普通玩家',moderator:'版主',admin:'管理员'};
 const seeds=[
@@ -69,7 +70,7 @@ function adminView(){if(!canManage())return head('这里是站务区','当前身
 function prepareRouteEffects(r,animate=true){document.body.dataset.visualRoute=r;document.querySelectorAll('.integrated-art-host').forEach(el=>el.remove());if(window.mountRouteArt)window.mountRouteArt();applyReactBitsEffects($('#page-pane'),animate)}
 function decryptHeading(root){const heading=root.querySelector('.page-heading h1');if(!heading||motionPaused||reduced.matches)return;const final=heading.textContent,chars='01▓▒░◇△';let tick=0;const timer=setInterval(()=>{heading.textContent=[...final].map((char,index)=>char===' '?char:index<tick/2?char:chars[(index+tick)%chars.length]).join('');tick++;if(tick>final.length*2){clearInterval(timer);heading.textContent=final}},28)}
 function applyReactBitsEffects(root,animate=true){root.querySelectorAll('.news-feature,.deal-card,.wiki-card').forEach(card=>{card.classList.add('spotlight-card');card.onpointermove=ev=>{const b=card.getBoundingClientRect();card.style.setProperty('--spot-x',ev.clientX-b.left+'px');card.style.setProperty('--spot-y',ev.clientY-b.top+'px')}});root.querySelectorAll('.deal-card').forEach(card=>card.classList.add('glare-hover'));root.querySelectorAll('.solid-btn').forEach(button=>button.classList.add('star-border'));root.querySelectorAll('.forum-table tbody tr,.news-row,.quick-post,.wiki-card').forEach((item,index)=>{if(animate&&!motionPaused&&!reduced.matches)item.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'translateY(0)'}],{duration:360,delay:Math.min(index*45,360),easing:'cubic-bezier(.2,.8,.2,1)',fill:'both'})});if(animate)decryptHeading(root)}
-function render(r=route,animate=true){if(typeof window.unmountCommunity==='function')window.unmountCommunity();route=r;let html;if(r==='home')html=homeView();else if(['community','guides','creations','saved'].includes(r))html=forumView(r);else if(r==='deals')html=typeof catalogView==='function'?catalogView():head('游戏折扣','愿望单还在等，但购买前也可以先等等。')+dealCards()+`<div class="section-title"><h2>买之前，先翻一份攻略</h2></div>${quickPosts()}`;else if(r.startsWith('news/'))html=typeof newsReader==='function'?newsReader(r):head('正在打开新闻','正在连接来源…');else if(r==='wiki')html=wikiView();else if(r.startsWith('wiki/'))html=articleView(r.slice(5),true);else if(r.startsWith('article/'))html=articleView(r.slice(8));else if(r==='admin')html=adminView();else html=head('走错传送门了','返回发现页，重新选择一份存档。');const coreRoute=['community','guides','creations','saved','admin','wiki','minigame','memory','dodge','video'].includes(r)||r.startsWith('video/')||r.startsWith('article/')||r.startsWith('profile')||r.startsWith('wiki/');if(coreRoute&&window.mountCommunity)html='<div id="community-app"></div>';$('#page-pane').innerHTML=html;document.querySelectorAll('.nav-item').forEach(b=>{const yes=b.dataset.route===r||r.startsWith('article/')&&b.dataset.route==='community'||r.startsWith('news/')&&b.dataset.route==='home';b.classList.toggle('active',yes);if(yes)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});prepareRouteEffects(r,animate);updateChrome();attachMagnet();if(typeof mountDiscovery==='function')mountDiscovery(r);if(coreRoute&&window.mountCommunity)window.mountCommunity(r);}
+function render(r=route,animate=true){if(typeof window.unmountCommunity==='function')window.unmountCommunity();route=r;let html;if(r==='home')html=homeView();else if(['community','guides','creations','saved'].includes(r))html=forumView(r);else if(r==='deals')html=typeof catalogView==='function'?catalogView():head('游戏折扣','愿望单还在等，但购买前也可以先等等。')+dealCards()+`<div class="section-title"><h2>买之前，先翻一份攻略</h2></div>${quickPosts()}`;else if(r.startsWith('news/'))html=typeof newsReader==='function'?newsReader(r):head('正在打开新闻','正在连接来源…');else if(r==='wiki')html=wikiView();else if(r.startsWith('wiki/'))html=articleView(r.slice(5),true);else if(r.startsWith('article/'))html=articleView(r.slice(8));else if(r==='admin')html=adminView();else html=head('走错传送门了','返回发现页，重新选择一份存档。');const coreRoute=['community','guides','creations','saved','admin','wiki','minigame','memory','dodge','video'].includes(r)||r.startsWith('video/')||r.startsWith('article/')||r.startsWith('player/')||r.startsWith('profile')||r.startsWith('wiki/');if(coreRoute&&window.mountCommunity)html='<div id="community-app"></div>';$('#page-pane').innerHTML=html;document.querySelectorAll('.nav-item').forEach(b=>{const yes=b.dataset.route===r||r.startsWith('article/')&&b.dataset.route==='community'||r.startsWith('news/')&&b.dataset.route==='home';b.classList.toggle('active',yes);if(yes)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});prepareRouteEffects(r,animate);updateChrome();attachMagnet();if(typeof mountDiscovery==='function')mountDiscovery(r);if(coreRoute&&window.mountCommunity)window.mountCommunity(r);}
 const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 window.addEventListener('offline-navigate',event=>go(event.detail,false));
 function transitionMarkup(kind,target){
@@ -90,7 +91,7 @@ async function go(r,animate=true){
  busy=true;pending=null;
  const trans=$('#inline-transition'),pane=$('#page-pane');
  const kind=r==='home'?'newspaper':r==='community'?'chat':r==='guides'||r==='wiki'||r.startsWith('wiki/')||r==='admin'||r.startsWith('article/')?'computer':r==='creations'?'paint':r==='deals'?'shop':'push';
- const animations=[];
+ const animations=[];let story=null;
  const anim=(el,keyframes,options)=>{const instance=el.animate(keyframes,options);animations.push(instance);return instance.finished.catch(()=>{})};
  trans.className='inline-transition scene-transition '+kind+'-transition';
  trans.dataset.kind=kind;
@@ -100,6 +101,9 @@ async function go(r,animate=true){
  $('#view-host').classList.add('is-transitioning');
  pane.setAttribute('aria-busy','true');
  try{
+  story=window.runOfflineStory?.(trans,kind);
+  if(story){await Promise.all([anim(trans,[{opacity:0},{opacity:1}],{duration:280,fill:'forwards'}),anim(pane,[{opacity:1},{opacity:.12}],{duration:350,fill:'forwards'}),story.finished]);}
+  else{
   await anim(trans,[{opacity:0},{opacity:1}],{duration:kind==='computer'?600:320,easing:'ease-out',fill:'forwards'});
   if(kind==='computer'){
    await wait(1650);
@@ -119,6 +123,7 @@ async function go(r,animate=true){
   }else{
    await Promise.all([anim(pane,[{opacity:1},{opacity:.12}],{duration:360,fill:'forwards'}),wait(kind==='paint'?1320:kind==='shop'?1200:1150)]);
   }
+  }
   const next=pending||r;pending=null;
   render(next);history.pushState(null,'','#'+next);
   await Promise.all([
@@ -126,6 +131,7 @@ async function go(r,animate=true){
    anim(pane,[{opacity:.12,transform:'translateY(18px) scale(.97)'},{opacity:1,transform:'translateY(0) scale(1)'}],{duration:560,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'})
   ]);
  }finally{
+  story?.dispose();
   animations.forEach(a=>a.cancel());
   trans.hidden=true;
   trans.innerHTML='';

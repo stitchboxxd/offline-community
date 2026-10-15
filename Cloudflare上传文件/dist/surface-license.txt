@@ -3,3 +3,11 @@ https://polyhaven.com/a/wood_table_001
 https://polyhaven.com/license
 Local 1K diffuse, OpenGL normal and roughness maps. No runtime CDN dependency.
 Other surface maps and 3D geometry are generated for this project.
+
+Additional integrated scene assets (Poly Haven, CC0):
+Potted Plant 02: https://polyhaven.com/a/potted_plant_02
+Desk Lamp Arm 01: https://polyhaven.com/a/desk_lamp_arm_01
+Shanghai Bund tonemapped panorama: https://polyhaven.com/a/shanghai_bund
+License: https://polyhaven.com/license
+Models simplified and packed with meshoptimizer gltfpack; photographs remain unmodified source assets and are composed in the room renderer.
+Additional Wood Table Worn 1K color/normal/roughness: https://polyhaven.com/a/wood_table_worn (CC0).
