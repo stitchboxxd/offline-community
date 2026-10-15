@@ -1,0 +1,5 @@
+Wood Table 001 — Poly Haven, CC0
+https://polyhaven.com/a/wood_table_001
+https://polyhaven.com/license
+Local 1K diffuse, OpenGL normal and roughness maps. No runtime CDN dependency.
+Other surface maps and 3D geometry are generated for this project.
